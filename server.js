@@ -1,10 +1,19 @@
-var http = require('http');
+var express = require('express');
+var app = express();
 var lyrics = require('./lyrics');
 
-http.createServer(function(request, response) {
+app.get('/lyrics', function(req, res){
   var chosenString = lyrics[Math.floor(Math.random()*lyrics.length)];
+  res.send(chosenString);
+});
 
-  response.writeHead(200, { "Content-type": "text/plain" });
-  response.write(chosenString);
-  response.end();
-}).listen(1234);
+app.get('/api/lyrics', function(req, res){
+
+  res.send(lyrics);
+});
+
+var server = app.listen(1234, function(){
+  var host = server.address().address;
+  var port = server.address().port;
+  console.log("Server is running");
+});
